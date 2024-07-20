@@ -9,3 +9,11 @@ Yellow/Blue = both
 Green = correct
 
 a winning game would be the user solving all the words without making x mistakes
+
+
+
+
+mils
+idea
+seam
+safe
