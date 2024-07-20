@@ -1,0 +1,21 @@
+
+body {
+    text-align: center;
+}
+
+.grid {
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template: repeat(5, 10%)/repeat(5, 10%);
+    position: relative;
+}
+.grid__item {
+    border: 1px solid #000000;
+  }
+  .grid--2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
