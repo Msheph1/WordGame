@@ -3,13 +3,14 @@
 
 function loadWords() {
     console.log('loadwords');
-    fetch('words4let.txt')
+    fetch('words4letLiked')
         .then(response => response.text())
         .then(data => {
             // Split the content by new lines to get an array of words
             let wordsArray = data.split('\n').map(word => word.trim()).filter(word => word.length > 0);
             // Log the array to the console
             console.log(wordsArray);
+            //getAllBoard4Let(wordsArray);
             getBoard(wordsArray);
         })
         .catch(error => console.error('Error fetching the file:', error));
@@ -21,7 +22,7 @@ function loadWords() {
 function getBoard(wordsArray){
     let charArr = [['a','a','a','a'],['a','a','a','a'],['a','a','a','a'],['a','a','a','a']];
     let size = wordsArray.length;
-    for(let i = 0; i < 1000000; i++)
+    for(let i = 0; i < 10000000; i++)
     {
         charArr[0] = wordsArray[Math.floor(Math.random() * size)].split('');
         charArr[1] = wordsArray[Math.floor(Math.random() * size)].split('');
@@ -37,6 +38,8 @@ function getBoard(wordsArray){
         }
     }
 }
+
+
 
 
 function getBoard3(wordsArray){
@@ -60,6 +63,34 @@ function getBoard3(wordsArray){
         }
     }
 }
+
+function getAllBoard4Let(wordsArray) {
+    let charArr = [['a','a','a','a'],['a','a','a','a'],['a','a','a','a'],['a','a','a','a']];
+    let size = wordsArray.length;
+    let count = 0;
+    for(let i = 0; i < size; i++){
+        charArr[0] = wordsArray[i].split('');
+        for(let j = 1; j < size; j++){
+            charArr[1] = wordsArray[j].split('');
+            for(let k = 2; k < size; k++){
+                charArr[2] = wordsArray[k].split('');
+                for(let ix = 3; ix < size; ix++){
+                    charArr[3] = wordsArray[ix].split('');
+                    count++;
+                    if(count % 50000 == 0)
+                    {
+                        outputBoard(charArr);
+                    }
+                    if(isValidBoard(wordsArray, charArr)){
+                        console.log("WINNERNENRNE\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+                        outputBoard(charArr)
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 function getBoard2(wordsArray) {
     let charArr = [['a','a','a','a','a'],['a','a','a','a','a'],['a','a','a','a','a'],['a','a','a','a','a'],['a','a','a','a','a']];
