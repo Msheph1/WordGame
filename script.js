@@ -1,4 +1,4 @@
-
+let board1 = [['M','I','L','S'],['I','D','E','A'],['S','E','A','M'],['S','A','F',]]
 
 
 function loadWords() {
@@ -7,7 +7,7 @@ function loadWords() {
         .then(response => response.text())
         .then(data => {
             // Split the content by new lines to get an array of words
-            let wordsArray = data.split('\n').map(word => word.trim()).filter(word => word.length > 0);
+            let wordsArray = data.split('\n').map(word => word.trim())
             // Log the array to the console
             console.log(wordsArray);
             //getAllBoard4Let(wordsArray);
