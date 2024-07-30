@@ -16,10 +16,13 @@ body {
   width: 100%;
 }
 
+
 .grid {
     margin: auto;
-    width: 100%;
-    height: 100%;
+    place-content: center;
+    display: grid;
+    width: 600px;
+    height: 600px;
     display: grid;
     grid-template: repeat(5, 10%)/repeat(5, 10%);
     position: relative;
