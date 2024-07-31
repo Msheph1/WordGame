@@ -1,0 +1,65 @@
+html, body {
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+#grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display:flex;
+}
+
+.grid, .letter {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-size: 30px;
+    
+}
+
+.letter {
+    caret-color: transparent;
+    text-transform: uppercase;
+}
+
+.letter:hover {
+    background-color: lightgray;
+}
+
+.letter:focus {
+    background-color: yellow;
+    
+}
+
+.blueHighlight {
+    background-color: lightblue;
+}
+
+.correct {
+    color: green;
+}
+
+.wrongHorizontalSpot {
+    color: yellow;
+}
+
+.wrongVerticalSpot {
+    color: orange;
+}
+
+.wrongBothSpot {
+    color: blue;
+}

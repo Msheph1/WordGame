@@ -1,4 +1,124 @@
-let board1 = [['M','I','L','S'],['I','D','E','A'],['S','E','A','M'],['S','A','F',]]
+let board1 = [['M','I','L','S'],['I','D','E','A'],['S','E','A','M'],['S','A','F','E']]
+let horizontal = true;
+let previousClick;
+createGrid();
+
+function createGrid() {
+    deleteGrid();
+    horizontal = true;
+    const inputval = document.getElementById("gridsize");
+    const grid = document.getElementById("grid");
+    for(let i = 0; i < inputval.value; i++)
+    {
+        const rowdiv = document.createElement("div");
+        rowdiv.classList.add("row");
+        console.log('running');
+        for(let j = 0; j < inputval.value; j++)
+        {
+            
+            const newdiv = document.createElement("div");
+            newdiv.classList.add("grid");
+            console.log(newdiv);
+            const newinput = document.createElement("input");
+            newinput.classList.add("letter");
+            newinput.type = "text";
+            newinput.value = "";
+            newinput.maxLength = "1";
+            newinput.classList.add('R' + i);
+            newinput.classList.add(j);
+            newinput.addEventListener("click", onLetterClick);
+            newdiv.appendChild(newinput);
+            rowdiv.appendChild(newdiv);
+            
+        }
+        grid.appendChild(rowdiv);
+    }
+}
+
+
+function clearHighlights()
+{
+    const templist = document.getElementsByClassName("blueHighlight");
+    for(let i = templist.length - 1; i >= 0; i--)
+    {
+        templist[i].classList.remove("blueHighlight");
+    }
+}
+
+function onLetterClick() {
+    clearHighlights();
+    if(this == previousClick) {
+        horizontal = !horizontal;
+    }
+    if(horizontal) {
+        const templist = document.getElementsByClassName(this.classList[1]);
+        for(const tempdiv of templist)
+        {
+            tempdiv.classList.add("blueHighlight");
+        }
+    } else {
+        const templist = document.getElementsByClassName(this.classList[2]);
+        for(const tempdiv of templist)
+        {
+            tempdiv.classList.add("blueHighlight");
+        }
+    }
+    previousClick = this;
+}
+
+
+
+function deleteGrid() {
+    document.getElementById("grid").innerHTML = "";
+}
+
+function checkBoard() {
+    const letters = document.getElementsByClassName("letter");
+    const inboard = convertBoardtoCharArr(letters);
+
+    for(let i = 0; i< inboard.length; i++) {
+        for(let j = 0; j< inboard.length; j++) {
+            const tempLetter = letters[i * 4 + j];
+            if(inboard[i][j] == board1[i][j]) {
+                removeTags(tempLetter)
+                tempLetter.classList.add("correct");
+            } else if(checkHorizontal() && checkVertical()) {
+                removeTags(tempLetter);
+                tempLetter.classList.add("wrongBothSpot");
+            }
+        }
+    }
+}
+
+function removeTags(letter)
+{
+    letter.classList.remove("correct");
+    letter.classList.remove("wrongBothSpot");
+    letter.classList.remove("wrongVerticalSpot");
+    letter.classList.remove("wrongHorizontalSpot");
+}
+
+function checkHorizontal(inboard) {
+
+}
+
+function checkVertical(inboard) {
+}
+
+function convertBoardtoCharArr(letters){
+    const temparr = [['','','',''],['','','',''],['','','',''],['','','','']];
+    let count = 0;
+    for(let i = 0; i < temparr.length; i++)
+    {
+        for(let j =0; j < temparr.length; j++)
+        {
+            temparr[i][j] = letters[count].value.toUpperCase();
+            count++;
+        }
+    }
+    return temparr;
+}
+
 
 
 function loadWords() {
@@ -6,12 +126,10 @@ function loadWords() {
     fetch('words4letLiked')
         .then(response => response.text())
         .then(data => {
-            // Split the content by new lines to get an array of words
             let wordsArray = data.split('\n').map(word => word.trim())
-            // Log the array to the console
             console.log(wordsArray);
             //getAllBoard4Let(wordsArray);
-            getBoard(wordsArray);
+           //getBoard(wordsArray);
         })
         .catch(error => console.error('Error fetching the file:', error));
 
