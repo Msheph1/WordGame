@@ -1,4 +1,5 @@
 let board1 = [['M','I','L','S'],['I','D','E','A'],['S','E','A','M'],['S','A','F','E']]
+let highlighted = [];
 let horizontal = true;
 let previousClick;
 createGrid();
@@ -12,13 +13,11 @@ function createGrid() {
     {
         const rowdiv = document.createElement("div");
         rowdiv.classList.add("row");
-        console.log('running');
         for(let j = 0; j < inputval.value; j++)
         {
             
             const newdiv = document.createElement("div");
             newdiv.classList.add("grid");
-            console.log(newdiv);
             const newinput = document.createElement("input");
             newinput.classList.add("letter");
             newinput.type = "text";
@@ -27,6 +26,7 @@ function createGrid() {
             newinput.classList.add('R' + i);
             newinput.classList.add(j);
             newinput.addEventListener("click", onLetterClick);
+            newinput.addEventListener("keyup", moveToNext)
             newdiv.appendChild(newinput);
             rowdiv.appendChild(newdiv);
             
@@ -39,6 +39,7 @@ function createGrid() {
 function clearHighlights()
 {
     const templist = document.getElementsByClassName("blueHighlight");
+    highlighted = [];
     for(let i = templist.length - 1; i >= 0; i--)
     {
         templist[i].classList.remove("blueHighlight");
@@ -55,15 +56,32 @@ function onLetterClick() {
         for(const tempdiv of templist)
         {
             tempdiv.classList.add("blueHighlight");
+            highlighted.push(tempdiv);
         }
     } else {
         const templist = document.getElementsByClassName(this.classList[2]);
         for(const tempdiv of templist)
         {
             tempdiv.classList.add("blueHighlight");
+            highlighted.push(tempdiv);
         }
     }
     previousClick = this;
+}
+
+function moveToNext() {
+    let index;
+    for(let i = 0; i < highlighted.length; i++)
+    {
+        console.log(highlighted[i].classList);
+        if(this == highlighted[i])
+        {
+            index = i;
+        }
+    }
+    console.log('ran');
+    highlighted[(index + 1) % highlighted.length].focus();
+
 }
 
 

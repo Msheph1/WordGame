@@ -35,9 +35,6 @@ html, body {
     text-transform: uppercase;
 }
 
-.letter:hover {
-    background-color: lightgray;
-}
 
 .letter:focus {
     background-color: yellow;
