@@ -13,6 +13,15 @@ a winning game would be the user solving all the words without making x mistakes
 
 
 
+
+
+
+
+Added a new index2 to mess around with stuff probably going to need to put the input fields somewhere else and have then fill in the grid and fix tabs
+Also should grab all words 2 , 3 , 4 , 5 , 6, 7 that way we can have variable grid and work with black squares
+Also have to decide if we want it to check word by word or board by board or board by board - incorrect letters
+
+
 mils
 idea
 seam
