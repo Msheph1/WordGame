@@ -1,5 +1,6 @@
 let board1 = [['M','I','L','S'],['I','D','E','A'],['S','E','A','M'],['S','A','F','E']]
 let highlighted = [];
+let letterOrder = []
 let horizontal = true;
 let previousClick;
 createGrid();
@@ -13,9 +14,9 @@ function createGrid() {
     {
         const rowdiv = document.createElement("div");
         rowdiv.classList.add("row");
+        let temparr = []
         for(let j = 0; j < inputval.value; j++)
         {
-            
             const newdiv = document.createElement("div");
             newdiv.classList.add("grid");
             const newinput = document.createElement("input");
@@ -29,12 +30,27 @@ function createGrid() {
             newinput.addEventListener("keyup", moveToNext)
             newdiv.appendChild(newinput);
             rowdiv.appendChild(newdiv);
-            
+            temparr.push(newinput);
         }
+        letterOrder.push(temparr);
         grid.appendChild(rowdiv);
     }
+    addVerticalOrder();
 }
 
+function addVerticalOrder() {
+    //TODO dynamic grid size
+    console.log(letterOrder);
+    for(let i = 0; i < 4; i++)
+    {
+        let temparr = [];
+        for(let j = 0; j < 4; j++) {
+
+            temparr.push(letterOrder[j][i]);
+        }
+        letterOrder.push(temparr);
+    }
+}
 
 function clearHighlights()
 {
@@ -70,19 +86,50 @@ function onLetterClick() {
 }
 
 function moveToNext() {
-    let index;
-    for(let i = 0; i < highlighted.length; i++)
+    let indexr = -1;
+    let indexc;
+    for(let i = 0; i < letterOrder.length; i++)
     {
-        console.log(highlighted[i].classList);
-        if(this == highlighted[i])
-        {
-            index = i;
+        for(let j = 0; j < letterOrder[0].length; j++) {
+            if(this == letterOrder[i][j])
+            {
+                indexr = i;
+                indexc = j;
+                i = letterOrder.length;
+                break;
+            }
         }
     }
-    console.log('ran');
-    highlighted[(index + 1) % highlighted.length].focus();
-
+    //checkword 
+    //check horizontal if horizontal and vertical if vertical then check next
+    if(horizontal) {
+        console.log('horizontal ran');
+        let count = indexc + 1;
+        for(let i = 0; i < letterOrder[0].length; i++) {
+            if(letterOrder[indexr][count % letterOrder[0].length].value == "") {
+                letterOrder[indexr][count % letterOrder[0].length].focus();
+            }
+        }
+    } else {
+        console.log('vertical ran');
+        let count = indexr + 1;
+        for(let i = 0; i < letterOrder[0].length; i++) {
+            if(letterOrder[count % letterOrder[0].length][indexc].value == "") {
+                letterOrder[count % letterOrder[0].length][indexc].focus();
+            }
+        }
+    }
+    for(let i = 0; i < indexc; i++)
+        {
+            for(let j = 0; j < letterOrder[0].length; j++) {
+                if(letterOrder[i][j].value == "") {
+                    console.log('focusbefore');
+                    letterOrder[i][j].focus();
+                }
+            }
+        }
 }
+
 
 
 
