@@ -26,3 +26,22 @@ mils
 idea
 seam
 safe
+
+
+
+left to do 
+
+replace previous letter when typing
+make sure incorrect class doesn't stay on letter after swapping letter
+test color coding / redo color scheme
+fix when typing fast
+make backspace go to previous moves
+add counter for incorrect letters
+add area to add starting guess letters
+add correct submission page
+add more boards
+
+
+future 
+add black squares
+add dynamic grid sizes

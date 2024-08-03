@@ -6,6 +6,7 @@ let previousClick;
 createGrid();
 
 function createGrid() {
+    console.log(board1);
     deleteGrid();
     horizontal = true;
     const inputval = document.getElementById("gridsize");
@@ -40,7 +41,6 @@ function createGrid() {
 
 function addVerticalOrder() {
     //TODO dynamic grid size
-    console.log(letterOrder);
     for(let i = 0; i < 4; i++)
     {
         let temparr = [];
@@ -67,30 +67,40 @@ function onLetterClick() {
     if(this == previousClick) {
         horizontal = !horizontal;
     }
+    setHighlights(this);
+    previousClick = this;
+}
+
+function setHighlights(input) {
     if(horizontal) {
-        const templist = document.getElementsByClassName(this.classList[1]);
+        const templist = document.getElementsByClassName(input.classList[1]);
         for(const tempdiv of templist)
         {
             tempdiv.classList.add("blueHighlight");
             highlighted.push(tempdiv);
         }
     } else {
-        const templist = document.getElementsByClassName(this.classList[2]);
+        const templist = document.getElementsByClassName(input.classList[2]);
         for(const tempdiv of templist)
         {
             tempdiv.classList.add("blueHighlight");
             highlighted.push(tempdiv);
         }
     }
-    previousClick = this;
+}
+
+function moveToNextHighlights(input) {
+    clearHighlights();
+    setHighlights(input);
 }
 
 function moveToNext() {
-    let indexr = -1;
+    let indexr;
     let indexc;
+    let lengthOfGrid = letterOrder[0].length;
     for(let i = 0; i < letterOrder.length; i++)
     {
-        for(let j = 0; j < letterOrder[0].length; j++) {
+        for(let j = 0; j < lengthOfGrid; j++) {
             if(this == letterOrder[i][j])
             {
                 indexr = i;
@@ -103,31 +113,60 @@ function moveToNext() {
     //checkword 
     //check horizontal if horizontal and vertical if vertical then check next
     if(horizontal) {
-        console.log('horizontal ran');
         let count = indexc + 1;
-        for(let i = 0; i < letterOrder[0].length; i++) {
-            if(letterOrder[indexr][count % letterOrder[0].length].value == "") {
-                letterOrder[indexr][count % letterOrder[0].length].focus();
+        for(let i = 0; i < lengthOfGrid; i++) {
+            const tempInput = letterOrder[indexr][count % lengthOfGrid];
+            if(tempInput.value == "") {
+                tempInput.focus();
+                previousClick = tempInput;
+                return;
             }
+            count++;
         }
     } else {
-        console.log('vertical ran');
         let count = indexr + 1;
-        for(let i = 0; i < letterOrder[0].length; i++) {
-            if(letterOrder[count % letterOrder[0].length][indexc].value == "") {
-                letterOrder[count % letterOrder[0].length][indexc].focus();
+        for(let i = 0; i < lengthOfGrid; i++) {
+            const tempInput = letterOrder[count % lengthOfGrid][indexc];
+            if(tempInput.value == "") {
+                tempInput.focus();
+                previousClick = tempInput;
+                return;
             }
+            count++;
         }
     }
-    for(let i = 0; i < indexc; i++)
-        {
-            for(let j = 0; j < letterOrder[0].length; j++) {
-                if(letterOrder[i][j].value == "") {
-                    console.log('focusbefore');
-                    letterOrder[i][j].focus();
+    if(horizontal) {
+        let count = 0;
+        while(count < lengthOfGrid) {
+            for(let i = 0; i < lengthOfGrid; i++)
+            {
+                const tempInput = letterOrder[(indexr + count + 1) % lengthOfGrid][i];
+                if(tempInput.value == "") {
+                    tempInput.focus();
+                    moveToNextHighlights(tempInput);
+                    previousClick = tempInput;
+                    return;
                 }
             }
+            count++;
         }
+    } else {
+        let count = 0;
+        while(count < lengthOfGrid) {
+            for(let i = 0; i < lengthOfGrid; i++)
+            {
+                const tempInput = letterOrder[i][(indexc + count + 1) % lengthOfGrid];
+                if(tempInput.value == "") {
+                    tempInput.focus();
+                    moveToNextHighlights(tempInput);
+                    previousClick = tempInput;
+                    return;
+                }
+            }
+            count++;
+        }
+
+    }
 }
 
 
@@ -140,34 +179,91 @@ function deleteGrid() {
 function checkBoard() {
     const letters = document.getElementsByClassName("letter");
     const inboard = convertBoardtoCharArr(letters);
-
     for(let i = 0; i< inboard.length; i++) {
         for(let j = 0; j< inboard.length; j++) {
             const tempLetter = letters[i * 4 + j];
             if(inboard[i][j] == board1[i][j]) {
-                removeTags(tempLetter)
-                tempLetter.classList.add("correct");
-            } else if(checkHorizontal() && checkVertical()) {
                 removeTags(tempLetter);
-                tempLetter.classList.add("wrongBothSpot");
+                tempLetter.classList.add('correct');
             }
         }
     }
+    for(let i = 0; i< inboard.length; i++) {
+        for(let j = 0; j< inboard.length; j++) {
+            const tempLetter = letters[i * 4 + j];
+            let className;
+            if(tempLetter.classList[3] != 'correct' && tempLetter.value != "") {
+                const horizontalVal = checkHorizontal(inboard[i][j], i, letters);
+                const verticalVal = checkVertical(inboard[i][j], j, letters);
+                if(horizontalVal && verticalVal) {
+                    className = 'wrongBothSpot';
+                } else if(horizontalVal) {
+                    className = 'wrongHorizontalSpot';
+                } else if(verticalVal) {
+                    className = 'wrongVerticalSpot';
+                }  else {
+                    className = 'incorrect';
+                }
+                removeTags(tempLetter);
+                tempLetter.classList.add(className);
+            }
+        }
+    }
+        
 }
 
 function removeTags(letter)
 {
+    letter.classList.remove('blueHighlight');
     letter.classList.remove("correct");
     letter.classList.remove("wrongBothSpot");
     letter.classList.remove("wrongVerticalSpot");
     letter.classList.remove("wrongHorizontalSpot");
+    letter.classList.remove("incorrect");
 }
 
-function checkHorizontal(inboard) {
 
+function checkHorizontal(letter, row, letters) {
+    //count nubmer of letters that match ours
+    let count = 0;
+    for(let i = 0; i < board1[row].length; i++) {
+        if(board1[row][i] == letter) {
+            count++;
+        }
+    }
+    for(let i = 0; i < board1[row].length; i++) {
+        const input = letters[row * 4 + i];
+        if(board1[row][i] == letter) {
+            if(input.classList[3] == 'correct') {
+                count--;
+            }
+        }
+        if(input.value.toUpperCase() == letter && input.classList[3] == 'wrongHorizontalSpot') {
+            count--;
+        }
+    }
+    return count > 0;
 }
 
-function checkVertical(inboard) {
+function checkVertical(letter, col, letters) {
+    let count = 0;
+    for(let i = 0; i < board1[col].length; i++) {
+        if(board1[i][col] == letter) {
+            count++;
+        }
+    }
+    for(let i = 0; i < board1[col].length; i++) {
+        const input = letters[i * 4 + col];
+        if(board1[i][col] == letter) {
+            if(input.classList[3] == 'correct') {
+                count--;
+            }
+        }
+        if(input.value.toUpperCase() == letter && input.classList[3] == 'wrongVerticalSpot') {
+            count--;
+        }
+    }
+    return count > 0;
 }
 
 function convertBoardtoCharArr(letters){
@@ -337,4 +433,3 @@ function isValidBoard(wordsArray,charArr)
     }
     return true;
 }
-    

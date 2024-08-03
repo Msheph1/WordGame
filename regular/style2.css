@@ -60,3 +60,7 @@ html, body {
 .wrongBothSpot {
     color: blue;
 }
+
+.incorrect {
+    color: red;
+}
