@@ -2,13 +2,13 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="style2.css" />
-     <script src="script.js" defer></script>
+    <script src="script.js" defer></script>
   </head>
   <body>
-    <div class="container">   
+    <div class="container">
       <h1>WORD GAME</h1>
       <div class="buttons">
-        <input type="number" value="4" id="gridsize">
+        <input type="number" value="4" id="gridsize" />
         <button onclick="createGrid()">Create Grid</button>
         <button onclick="loadWords()">BUTTON</button>
       </div>
@@ -23,6 +23,10 @@
         <p class="wrongVerticalSpot">In the word Vertically</p>
         <p class="wrongBothSpot">In both words</p>
       </div>
-    </div> 
+      <div class="incorrect">
+        <p>Number of incorrect Letters:</p>
+        <p>0</p>
+      </div>
+    </div>
   </body>
 </html>
