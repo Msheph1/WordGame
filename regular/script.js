@@ -4,6 +4,12 @@ let board1 = [
   ["S", "E", "A", "M"],
   ["S", "A", "F", "E"],
 ];
+let board2 = [
+  ["S", "N", "O", "T"],
+  ["H", "I", "R", "E"],
+  ["I", "C", "E", "S"],
+  ["V", "E", "S", "T"],
+];
 let highlighted = [];
 let letterOrder = [];
 let numIncorrect = 0;
@@ -11,11 +17,16 @@ let horizontal = true;
 let previousClick;
 createGrid();
 
-function createGrid() {
-  console.log(board1);
+function resetGame() {
   deleteGrid();
+  highlighted = [];
+  letterOrder = [];
   numIncorrect = 0;
   horizontal = true;
+}
+function createGrid() {
+  console.log(board1);
+  resetGame();
   const inputval = document.getElementById("gridsize");
   const grid = document.getElementById("grid");
   for (let i = 0; i < inputval.value; i++) {
@@ -33,7 +44,8 @@ function createGrid() {
       newinput.classList.add("R" + i);
       newinput.classList.add(j);
       newinput.addEventListener("click", onLetterClick);
-      newinput.addEventListener("keyup", moveToNext);
+      newinput.addEventListener("input", moveToNext);
+      newinput.addEventListener("keydown", replaceLetter);
       newdiv.appendChild(newinput);
       rowdiv.appendChild(newdiv);
       temparr.push(newinput);
@@ -61,6 +73,11 @@ function clearHighlights() {
   for (let i = templist.length - 1; i >= 0; i--) {
     templist[i].classList.remove("blueHighlight");
   }
+}
+
+function replaceLetter() {
+  this.value = "";
+  this.classList.remove(this.classList[3]);
 }
 
 function onLetterClick() {
@@ -287,7 +304,7 @@ function loadWords() {
       let wordsArray = data.split("\n").map((word) => word.trim());
       console.log(wordsArray);
       //getAllBoard4Let(wordsArray);
-      //getBoard(wordsArray);
+      getBoard(wordsArray);
     })
     .catch((error) => console.error("Error fetching the file:", error));
 }
