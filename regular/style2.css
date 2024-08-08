@@ -31,6 +31,10 @@ body {
   font-size: 30px;
 }
 
+.inputletters {
+  text-transform: uppercase;
+}
+
 .letter {
   caret-color: transparent;
   text-transform: uppercase;
