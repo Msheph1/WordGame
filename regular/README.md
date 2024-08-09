@@ -37,14 +37,14 @@ test
 left to do
 
 replace previous letter when typing
-make sure incorrect class doesn't stay on letter after swapping letter
-test color coding / redo color scheme
-fix when typing fast
+
 make backspace go to previous moves
 add counter for incorrect letters
-add area to add starting guess letters
+add area to add starting guess letters - want it to be like wheel of fortune
 add correct submission page
 add more boards
+
+test color coding / redo color scheme
 
 future
 add black squares
