@@ -19,11 +19,28 @@ createGrid();
 
 function resetGame() {
   deleteGrid();
-  highlighted = [];
+  const winnertag = document.getElementById("winner");
+  winnertag.innerHTML = "Good Luck!";
+  winnertag.className = "";
   letterOrder = [];
   numIncorrect = 0;
   horizontal = true;
 }
+function startLetters() {
+  const inputLetters = document.getElementById("inputLetters");
+  const letterArr = inputLetters.value.toUpperCase().split("");
+  console.log(board1);
+  console.log(letterOrder);
+  for (let i = 0; i < board1.length; i++) {
+    for (let j = 0; j < board1.length; j++) {
+      if (letterArr.includes(board1[i][j])) {
+        letterOrder[i][j].value = board1[i][j];
+        letterOrder[i][j].classList.add("correct");
+      }
+    }
+  }
+}
+
 function createGrid() {
   console.log(board1);
   resetGame();
@@ -45,7 +62,7 @@ function createGrid() {
       newinput.classList.add(j);
       newinput.addEventListener("click", onLetterClick);
       newinput.addEventListener("input", moveToNext);
-      newinput.addEventListener("keydown", replaceLetter);
+      newinput.addEventListener("keydown", replaceExistingLetter);
       newdiv.appendChild(newinput);
       rowdiv.appendChild(newdiv);
       temparr.push(newinput);
@@ -75,9 +92,11 @@ function clearHighlights() {
   }
 }
 
-function replaceLetter() {
+function replaceExistingLetter() {
   this.value = "";
-  this.classList.remove(this.classList[3]);
+  if (this.classList[3] != "blueHighlight") {
+    this.classList.remove(this.classList[3]);
+  }
 }
 
 function onLetterClick() {
@@ -187,12 +206,14 @@ function deleteGrid() {
 function checkBoard() {
   const letters = document.getElementsByClassName("letter");
   const inboard = convertBoardtoCharArr(letters);
+  let count = 0;
   for (let i = 0; i < inboard.length; i++) {
     for (let j = 0; j < inboard.length; j++) {
       const tempLetter = letters[i * 4 + j];
       if (inboard[i][j] == board1[i][j]) {
         removeTags(tempLetter);
         tempLetter.classList.add("correct");
+        count++;
       }
     }
   }
@@ -219,6 +240,11 @@ function checkBoard() {
     }
   }
   document.getElementById("numIncorrect").innerHTML = numIncorrect;
+  if (count == 16) {
+    const winnerheader = document.getElementById("winner");
+    winnerheader.innerHTML = "YOU WON!!!!";
+    winnerheader.classList.add("correct");
+  }
 }
 
 function removeTags(letter) {
