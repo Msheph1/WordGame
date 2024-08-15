@@ -1,21 +1,72 @@
-let board1 = [
+let testboard1 = [
   ["M", "I", "L", "S"],
   ["I", "D", "E", "A"],
   ["S", "E", "A", "M"],
   ["S", "A", "F", "E"],
 ];
-let board2 = [
+
+let testboard2 = [
   ["S", "N", "O", "T"],
   ["H", "I", "R", "E"],
   ["I", "C", "E", "S"],
   ["V", "E", "S", "T"],
 ];
+
+let testboard3 = [
+  ["C", "H", "O", "W"],
+  ["H", "A", "R", "E"],
+  ["A", "R", "C", "S"],
+  ["T", "E", "S", "T"],
+];
+
+let testboard4 = [
+  ["B", "A", "R", "F"],
+  ["A", "L", "O", "E"],
+  ["W", "O", "O", "L"],
+  ["L", "E", "F", "T"],
+];
+
+let testboards = [
+  [
+    ["M", "I", "L", "S"],
+    ["I", "D", "E", "A"],
+    ["S", "E", "A", "M"],
+    ["S", "A", "F", "E"],
+  ],
+  [
+    ["S", "N", "O", "T"],
+    ["H", "I", "R", "E"],
+    ["I", "C", "E", "S"],
+    ["V", "E", "S", "T"],
+  ],
+  [
+    ["C", "H", "O", "W"],
+    ["H", "A", "R", "E"],
+    ["A", "R", "C", "S"],
+    ["T", "E", "S", "T"],
+  ],
+  [
+    ["B", "A", "R", "F"],
+    ["A", "L", "O", "E"],
+    ["W", "O", "O", "L"],
+    ["L", "E", "F", "T"],
+  ],
+];
+
+let curBoardIndex = 0;
+let board1 = testboards[curBoardIndex];
 let highlighted = [];
 let letterOrder = [];
 let numIncorrect = 0;
 let horizontal = true;
 let previousClick;
 createGrid();
+
+function nextBoard() {
+  curBoardIndex++;
+  board1 = testboards[curBoardIndex % testboards.length];
+  resetGame();
+}
 
 function resetGame() {
   deleteGrid();
