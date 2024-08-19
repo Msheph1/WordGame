@@ -71,11 +71,14 @@ function nextBoard() {
 function resetGame() {
   deleteGrid();
   const winnertag = document.getElementById("winner");
+  const numIncorrectOnScreen = document.getElementById("numIncorrect");
+  numIncorrectOnScreen.innerHTML = "0";
   winnertag.innerHTML = "Good Luck!";
   winnertag.className = "";
   letterOrder = [];
   numIncorrect = 0;
   horizontal = true;
+  createGrid();
 }
 function startLetters() {
   const inputLetters = document.getElementById("inputLetters");
@@ -94,7 +97,6 @@ function startLetters() {
 
 function createGrid() {
   console.log(board1);
-  resetGame();
   const inputval = document.getElementById("gridsize");
   const grid = document.getElementById("grid");
   for (let i = 0; i < inputval.value; i++) {
@@ -282,9 +284,9 @@ function checkBoard() {
         } else if (verticalVal) {
           className = "wrongVerticalSpot";
         } else {
-          numIncorrect++;
           className = "incorrect";
         }
+        numIncorrect++;
         removeTags(tempLetter);
         tempLetter.classList.add(className);
       }
