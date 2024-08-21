@@ -382,8 +382,8 @@ function loadWords() {
     .then((data) => {
       let wordsArray = data.split("\n").map((word) => word.trim());
       console.log(wordsArray);
-      //getAllBoard4Let(wordsArray);
-      getBoard(wordsArray);
+      getAllBoard4Let(wordsArray);
+      //getBoard(wordsArray);
     })
     .catch((error) => console.error("Error fetching the file:", error));
 }
@@ -446,26 +446,57 @@ function getAllBoard4Let(wordsArray) {
   let count = 0;
   for (let i = 0; i < size; i++) {
     charArr[0] = wordsArray[i].split("");
+    let foundBoard = false;
     for (let j = 1; j < size; j++) {
+      if (foundBoard) {
+        break;
+      }
       charArr[1] = wordsArray[j].split("");
-      for (let k = 2; k < size; k++) {
-        charArr[2] = wordsArray[k].split("");
-        for (let ix = 3; ix < size; ix++) {
-          charArr[3] = wordsArray[ix].split("");
-          count++;
-          if (count % 50000 == 0) {
-            outputBoard(charArr);
+      let validVerticals = true;
+      for (let verti = 0; verti < 4; verti++) {
+        if (
+          !isPossibleWord(charArr[0][verti] + charArr[1][verti], wordsArray)
+        ) {
+          validVerticals = false;
+          break;
+        }
+      }
+      if (validVerticals) {
+        for (let k = 2; k < size; k++) {
+          if (foundBoard) {
+            break;
           }
-          if (isValidBoard(wordsArray, charArr)) {
-            console.log(
-              "WINNERNENRNE\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-            );
-            outputBoard(charArr);
+          charArr[2] = wordsArray[k].split("");
+          for (let ix = 3; ix < size; ix++) {
+            if (foundBoard) {
+              break;
+            }
+            charArr[3] = wordsArray[ix].split("");
+            count++;
+            if (count % 10000000 == 0) {
+              console.log(count);
+              foundBoard = true;
+              outputBoard(charArr);
+            }
+            if (isValidBoard(wordsArray, charArr)) {
+              foundBoard = true;
+              console.log("winner");
+              outputBoard(charArr);
+            }
           }
         }
       }
     }
   }
+}
+
+function isPossibleWord(str, wordsArray) {
+  for (let i = 0; i < wordsArray.length; i++) {
+    if (wordsArray[i].substring(0, 2) == str) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function getBoard2(wordsArray) {
