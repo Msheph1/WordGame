@@ -381,11 +381,31 @@ function loadWords() {
     .then((response) => response.text())
     .then((data) => {
       let wordsArray = data.split("\n").map((word) => word.trim());
+      let map = convertArrtoMap(wordsArray);
       console.log(wordsArray);
-      getAllBoard4Let(wordsArray);
+      console.log("ran");
+      console.log(map);
+      //getAllBoard4Let(wordsArray);
       //getBoard(wordsArray);
     })
     .catch((error) => console.error("Error fetching the file:", error));
+}
+
+function convertArrtoMap(wordsArray) {
+  let map = new Map();
+  for (let i = 0; i < wordsArray.length; i++) {
+    const twolet = wordsArray[i].substring(0, 2);
+    if (map.has(twolet)) {
+      let tempArr = map.get(twolet);
+      tempArr.push(wordsArray[i]);
+      map.set(twolet, tempArr);
+    } else {
+      let tempArr = [];
+      tempArr.push(wordsArray[i]);
+      map.set(twolet, tempArr);
+    }
+  }
+  return map;
 }
 
 function getBoard(wordsArray) {
