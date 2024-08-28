@@ -1,14 +1,21 @@
+import { useState } from "react";
+
 function Settings() {
+  const [newGridSize, setNewGridSize] = useState("4");
+
   return (
     <div className="Settings">
-      <input type="number" value="4" id="gridsize" />
-      <button onclick="createGrid()">Create Grid</button>
+      <input
+        value={newGridSize}
+        onChange={(e) => setNewGridSize(e.target.value)}
+        type="number"
+        id="gridsize"
+      />
+      <p>The gridsize is: {newGridSize}</p>
       <br></br>
       <button onclick="loadWords()">Find Boards</button>
       <button onclick="nextBoard()">Next Board</button>
       <br></br>
-      <input id="inputLetters" type="text" value="RLSTNE" maxlength="10" />
-      <button>Start Letters</button>
     </div>
   );
 }
